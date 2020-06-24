@@ -3,6 +3,7 @@ Build and install the project.
 
 Uses versioneer to manage version numbers using git tags.
 """
+
 from setuptools import setup, find_packages
 
 import versioneer
@@ -50,8 +51,8 @@ if __name__ == "__main__":
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         version=VERSION,
-        author=AUTHOR,
-        author_email=AUTHOR_EMAIL,
+        author=MAINTAINER,
+        author_email=MAINTAINER_EMAIL,
         maintainer=MAINTAINER,
         maintainer_email=MAINTAINER_EMAIL,
         license=LICENSE,

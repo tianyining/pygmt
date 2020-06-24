@@ -675,7 +675,7 @@ class BasePlotting:
 
         """
         kwargs = self._preprocess(**kwargs)
-        if not ("B" in kwargs or "L" in kwargs or "T" in kwargs):
+        if "B" not in kwargs and "L" not in kwargs and "T" not in kwargs:
             raise GMTInvalidInput("At least one of B, L, or T must be specified.")
         with Session() as lib:
             lib.call_module("basemap", build_arg_string(kwargs))
@@ -931,7 +931,7 @@ class BasePlotting:
         # Ensure inputs are either textfiles, x/y/text, or position/text
         if position is None:
             kind = data_kind(textfiles, x, y, text)
-        elif position is not None:
+        else:
             if x is not None or y is not None:
                 raise GMTInvalidInput(
                     "Provide either position only, or x/y pairs, not both"
@@ -943,21 +943,22 @@ class BasePlotting:
 
         # Build the `-F` argument in gmt text.
         if (
-            position is not None
-            or angle is not None
-            or font is not None
-            or justify is not None
-        ):
-            if "F" not in kwargs.keys():
-                kwargs.update({"F": ""})
-            if angle is not None and isinstance(angle, (int, float, str)):
-                kwargs["F"] += f"+a{str(angle)}"
-            if font is not None and isinstance(font, str):
-                kwargs["F"] += f"+f{font}"
-            if justify is not None and isinstance(justify, str):
-                kwargs["F"] += f"+j{justify}"
-            if position is not None and isinstance(position, str):
-                kwargs["F"] += f'+c{position}+t"{text}"'
+            (
+                position is not None
+                or angle is not None
+                or font is not None
+                or justify is not None
+            )
+        ) and "F" not in kwargs.keys():
+            kwargs.update({"F": ""})
+        if angle is not None and isinstance(angle, (int, float, str)):
+            kwargs["F"] += f"+a{str(angle)}"
+        if font is not None and isinstance(font, str):
+            kwargs["F"] += f"+f{font}"
+        if justify is not None and isinstance(justify, str):
+            kwargs["F"] += f"+j{justify}"
+        if position is not None and isinstance(position, str):
+            kwargs["F"] += f'+c{position}+t"{text}"'
 
         with GMTTempFile(suffix=".txt") as tmpfile:
             with Session() as lib:

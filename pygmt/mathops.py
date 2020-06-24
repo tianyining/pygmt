@@ -58,7 +58,7 @@ def makecpt(**kwargs):
             arg_str = build_arg_string(kwargs)
         elif "H" in kwargs.keys():  # if output is set
             outfile = kwargs.pop("H")
-            if not outfile or not isinstance(outfile, str):
+            if not (outfile and isinstance(outfile, str)):
                 raise GMTInvalidInput("'output' should be a proper file name.")
             arg_str = " ".join([build_arg_string(kwargs), f"-H > {outfile}"])
         lib.call_module(module="makecpt", args=arg_str)

@@ -138,8 +138,7 @@ def build_arg_string(kwargs):
         else:
             sorted_args.append("-{}{}".format(key, kwargs[key]))
 
-    arg_str = " ".join(sorted_args)
-    return arg_str
+    return " ".join(sorted_args)
 
 
 def is_nonstr_iter(value):
